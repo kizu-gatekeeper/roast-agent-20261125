@@ -20,6 +20,8 @@ from pathlib import Path
 
 LINE = "Our agent runs on a 1.5-CPU VM that reboots so often it has killed its own livestream more times than it has ever kept one alive."
 
+ENTRY_FILENAME = "entry.txt"
+
 
 def write_entry(out_dir: Path) -> Path:
     """Write the roast line to entry.txt inside out_dir and return its path.
@@ -27,8 +29,10 @@ def write_entry(out_dir: Path) -> Path:
     The file holds exactly the line and nothing else: no trailing newline,
     no extra whitespace.
     """
+    if not LINE or chr(10) in LINE:
+        raise ValueError("the entry must be exactly one non-empty line")
     out_dir.mkdir(parents=True, exist_ok=True)
-    entry_path = out_dir / "entry.txt"
+    entry_path = out_dir / ENTRY_FILENAME
     entry_path.write_text(LINE, encoding="utf-8")
     return entry_path
 
